@@ -28,12 +28,11 @@ module.exports = ()=>{
         select((sql)=>ipcRenderer.send('select',sql));
     }}));
     menuglo.append(new MenuItem({label: 'add', click() {
-        add((sql)=>ipcRenderer.send('add',sql));
+        add((args)=>ipcRenderer.send('add',args));
     }}));
     menuglo.append(new MenuItem({label: 'delete', click() {
-        dele((sql)=>ipcRenderer.send('delete',sql));
+        dele((args)=>ipcRenderer.send('delete',args));
     }}));
-
     $('.dg .main').on('mousedown',(e)=>{
         if(3 == e.which)
             menuglo.popup(remote.getCurrentWindow());

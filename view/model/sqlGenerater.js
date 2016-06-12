@@ -136,8 +136,42 @@ exports.dele = (callback)=>{
     where.clear();
     selectBinder = window.selectBinder;
     let orderNo = selectBinder.tables.OrderMaster.orderNo||selectBinder.tables.OrderDetail.orderNo;
+    if(!orderNo){
+        alert("请填写orderNo");
+        return;
+    }
     callback(orderNo);
 };
 
 exports.add = (callback)=>{
+    from.clear();
+    where.clear();
+    selectBinder = window.selectBinder;
+    let orderMaster = selectBinder.tables.OrderMaster;
+    let orderDetail = selectBinder.tables.OrderDetail;
+
+    let date = new Date();
+    orderMaster.orderDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+
+    orderMaster.orderSum = orderDetail.price * orderDetail.quantity;
+    if(orderMaster.orderNo != orderDetail.orderNo){
+        alert('orderNo 填写不一致');
+        return;
+    }
+    for(let ck in orderMaster){
+        if(orderMaster[ck] == ''||orderMaster[ck] == 0){
+            alert('信息填写不全');
+            return;
+        }
+    }
+    for(let ck in orderDetail){
+        if(orderDetail[ck] == ''||orderDetail[ck] == 0){
+            alert('信息填写不全');
+            return;
+        }
+    }
+    callback({
+        orderMaster:orderMaster,
+        orderDetail:orderDetail
+    });
 };

@@ -1,16 +1,30 @@
 const $  = require( 'jquery' );
 const dt = require( 'datatables.net' )(window, $ );
+
+const {remote} = require('electron');
+const {Menu, MenuItem} = remote;
 /**
  * Created by eason on 6/3/16.
  */
+const menu = new Menu();
+
 let current;
 let columns=[];
 
-exports.getCurrentRow = ()=>{return current;};
+menu.append(new MenuItem({label: 'update', click() {
+    let tds= current.children();
+    $.each( tds, function(i,val){
+        var jqob=$(val);
+        var txt=jqob.text();
+        var put=$("<input type='text'>");
+        put.val(txt);
+        jqob.html(put);
+    });
+}}));
 
-exports.setCurrentRow = (row)=>{
-    current = row;
-};
+exports.getCurrentRow = ()=>{
+    return current;
+}
 
 exports.getColsName = ()=>{
     return columns;
@@ -58,5 +72,11 @@ exports.sync = (array)=>{
         "columns": columns,
         destroy: true,
         scrollY: 200
+    });
+
+    table.on('mousedown','tr',function(e){
+        current = $(this);
+        if(3 == e.which)
+            menu.popup(remote.getCurrentWindow());
     });
 };

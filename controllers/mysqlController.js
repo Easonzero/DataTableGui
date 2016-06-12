@@ -4,7 +4,6 @@ let proxy = require('../proxy/mysqlProxy');
  */
 exports.select = (sql,callback) => {
   proxy.emit_call(sql,(err,result)=>{
-    if(!result) return 0;
     callback(result);
   });
 };
@@ -12,15 +11,27 @@ exports.select = (sql,callback) => {
 exports.update = (sql)=>{
   proxy.emit_nocall(sql,(err)=>{
     console.log('update proxy callback');
-    if(err) console.log(err);
+    if(err) {
+      return console.log(err);
+    }
+    callback('ok');
   });
 };
 
-exports.dele = (No,callback)=>{
-  proxy.delete(No,(err)=>{
+exports.dele = (args,callback)=>{
+  proxy.delete(args,(err)=>{
     console.log('delete proxy callback');
     if(err) {
-      callback('error');
+      return console.log(err);
+    }
+    callback('ok');
+  });
+};
+
+exports.add = (args,callback)=>{
+  proxy.add(args.orderDetail,args.orderMaster,(err)=>{
+    console.log('add proxy callback');
+    if(err) {
       return console.log(err);
     }
     callback('ok');

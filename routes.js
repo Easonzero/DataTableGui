@@ -1,12 +1,13 @@
 const {ipcMain} = require('electron');
-const {select,update,dele} = require('./controllers/mysqlController');
+const {select,update,dele,add} = require('./controllers/mysqlController');
 /**
  * Created by eason on 6/2/16.
  */
 let routes = {
     select:select,
     update:update,
-    delete:dele
+    delete:dele,
+    add:add
 };
 
 module.exports = () => {

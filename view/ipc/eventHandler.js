@@ -12,6 +12,9 @@ exports.handler = ()=>{
         else if(result == 'error'){
             alert('error');
         }
+        else if(!result||result.length === 0){
+            alert('查询结果为空');
+        }
         else window.resultTableBinder.sync(result);
     });
 };
